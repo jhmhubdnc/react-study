@@ -2,23 +2,41 @@ import styled from "@emotion/styled"
 import PokeNameChip from "../Common/PokeNameChip"
 import PokeMarkChip from "../Common/PokeMarkChip"
 import { useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { fetchPokemonDetail, PokemonDetailType } from "../Service/pokemonService"
 
 const TempImgUrl = 'https://i.namu.wiki/i/9_tLPzF06K2tkSuG6JcxLW7QwNbiImKSEA683DyGf8zkZzchWW9Of0K1pyIqsfF_6nUWuBVxhk2vUEI5e-_tgA.webp'
 
-const PokeCard = () => {
+interface PokeCardProps {
+    name: string,
+}
+
+const PokeCard = (props:PokeCardProps) => {
     const navigate = useNavigate()
+    const [pokemon, setPokemon] = useState<PokemonDetailType | null>(null)
 
     const handleClick = () => {
-        navigate(`/pokemon/이상해씨`)
+        navigate(`/pokemon/${props.name}`)
+    }
+
+    useEffect(() => {
+        (async () => {
+            const detail = await fetchPokemonDetail(props.name)
+            setPokemon(detail)
+        })()
+    }, [props.name])
+
+    if (!pokemon) {
+        return null // TODO: 로딩 화면 필요
     }
 
     return (
         <Item onClick={handleClick}>
             <Header>
-                <PokeNameChip></PokeNameChip>
+                <PokeNameChip name={pokemon.name} id={pokemon.id} />
             </Header>
             <Body>
-                <Image src={TempImgUrl} alt="제크로무 이미지" />
+                <Image src={pokemon.images.officialArtworkFront} alt="제크로무 이미지" />
             </Body>
             <Footer>
                 <PokeMarkChip></PokeMarkChip>

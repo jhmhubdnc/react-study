@@ -1,12 +1,35 @@
 import styled from "@emotion/styled"
 
-const PokeNameChip = () => {
+interface PokeNameChip {
+    name: string,
+    id: number, 
+}
+
+const PokeNameChip = (props:PokeNameChip) => {
+    const renderNumber = (id:number) => {
+        const digits = 3
+        const numberString = id.toString()
+
+        if (numberString.length >= 3) {
+            return numberString
+        }
+
+        let result = ''
+        const digitsNumberStringLen = (digits - numberString.length)
+
+        for (let i = 0; i < digitsNumberStringLen; i++) {
+            result += '0';   
+        }
+
+        return `${result}${numberString}`
+    }
+
     return (
         <Chip>
             <NumberChip>
-                <Number>001</Number>
+                <Number>{renderNumber(props.id)}</Number>
             </NumberChip>
-            <Text>이상해씨</Text>
+            <Text>{props.name}</Text>
         </Chip>
     )
 }
