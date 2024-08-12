@@ -5,8 +5,6 @@ import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { fetchPokemonDetail, PokemonDetailType } from "../Service/pokemonService"
 
-const TempImgUrl = 'https://i.namu.wiki/i/9_tLPzF06K2tkSuG6JcxLW7QwNbiImKSEA683DyGf8zkZzchWW9Of0K1pyIqsfF_6nUWuBVxhk2vUEI5e-_tgA.webp'
-
 interface PokeCardProps {
     name: string,
 }
@@ -31,9 +29,9 @@ const PokeCard = (props:PokeCardProps) => {
     }
 
     return (
-        <Item onClick={handleClick}>
+        <Item onClick={handleClick} color={pokemon.color}>
             <Header>
-                <PokeNameChip name={pokemon.name} id={pokemon.id} />
+                <PokeNameChip name={pokemon.koreanName} color={pokemon.color} id={pokemon.id} />
             </Header>
             <Body>
                 <Image src={pokemon.images.officialArtworkFront} alt="제크로무 이미지" />
@@ -45,7 +43,7 @@ const PokeCard = (props:PokeCardProps) => {
     )
 }
 
-const Item = styled.li`
+const Item = styled.li<{ color: string }>`
     display: flex;
     flex-direction: column;
 
@@ -65,7 +63,7 @@ const Item = styled.li`
     }
 
     &:active {
-        background-color: yellow;
+        background-color: ${props => props.color};
         opacity: 0.8;
         transition: background-color: 0s;
     }
