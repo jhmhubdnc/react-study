@@ -3,6 +3,7 @@ import PokeMarkChip from "../Common/PokeMarkChip"
 import { useEffect, useState } from "react"
 import { fetchPokemonDetail, PokemonDetailType } from "../Service/pokemonService"
 import { useParams } from "react-router-dom"
+import { PokeImageSkeleton } from "../Common/PokeImageSkeleton"
 
 const PokemonDetail = () => {
     let { name } =  useParams()
@@ -20,7 +21,17 @@ const PokemonDetail = () => {
     }, [name])
 
     if (!name || !pokemon) {
-        return null // TODO: name 값이 없을 경우 예외 처리
+        return (
+            <Container>
+                <ImageContainer>
+                    <PokeImageSkeleton />
+                </ImageContainer>
+                <Divider />
+                <Footer>
+                    <PokeMarkChip />
+                </Footer>
+            </Container>
+        )
     }
 
     return (
@@ -89,6 +100,7 @@ const ImageContainer = styled.section`
     justify-content: center;
     align-items: center;
     margin: 8px 0;
+    min-height: 350px;
 `
 
 const Image = styled.img`
